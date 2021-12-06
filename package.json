@@ -1,0 +1,29 @@
+{
+  "name": "moradi-team-profile-generator",
+  "version": "1.0.0",
+  "description": "command line driven application to generate an HTML file with input files",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moradi1412/A10-team-profile-generator.git"
+  },
+  "keywords": [
+    "profile",
+    "generator"
+  ],
+  "author": "Mohammad Javid Moradi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/moradi1412/A10-team-profile-generator/issues"
+  },
+  "homepage": "https://github.com/moradi1412/A10-team-profile-generator#readme",
+  "devDependencies": {
+    "jest": "^27.4.3"
+  },
+  "dependencies": {
+    "inquirer": "^8.2.0"
+  }
+}
