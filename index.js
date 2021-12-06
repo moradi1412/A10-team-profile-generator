@@ -5,9 +5,11 @@ const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 
 
-
-
-
+const generateSite = require('./src/generate-site.js');
+const fs = require("fs");
+const path = require("path");
+const output = path.resolve(__dirname, "output")
+const outputPath = path.join(output, "team-Profile-generator.html");
 const team = []; 
 
 
@@ -15,7 +17,7 @@ function userInput () {
     return inquirer.prompt([
         {
             type:'input',
-            name: 'Manager',
+            name: 'name',
             message: "Please enter the manager's name?"
         },
         {
@@ -34,7 +36,7 @@ function userInput () {
             message: "enter the manager's office number"
         }])
         .then( answers => {
-            const manager = new Manager (answers.Manager, answers.id, answers.email, answers.officeNumber ); 
+            const manager = new Manager (answers.name, answers.id, answers.email, answers.officeNumber ); 
             team.push(manager); 
             additionalMember(); 
         })
@@ -46,13 +48,13 @@ const additionalMember = () => {
             type:'list',
             name: 'roles',
             message: "which type of team member would like to add", 
-            Choice: ['Engineer', 'Intern', 'I dont want add any new one']
+            choices: ['Engineer', 'Intern', 'I dont want add any new one']
         }])
         .then (answers => {
             switch (answers.roles) { 
-                case "Engineer" : addEngineer(); 
-                case "Intern"   : addIntern (); 
-                default : build(); 
+                case "Engineer" : addEngineer(); break;
+                case "Intern"   : addIntern (); break; 
+                case "I dont want add any new one" : generateHTML(); 
             }   
         })
 };
@@ -82,7 +84,7 @@ const addEngineer = () => {
     ]).then(answers => {
         console.log(answers);
         const engineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
-        teamMembers.push(engineer);
+        team.push(engineer);
         additionalMember();
     })
 };
@@ -113,9 +115,17 @@ const addIntern = () => {
     ]).then(answers => {
         console.log(answers);
         const intern = new Intern(answers.name, answers.id, answers.email, answers.school);
-        teamMembers.push(intern);
+        team.push(intern);
         additionalMember();
     })
 };
+
+const generateHTML = () => {
+    console.log(`Finishing building the HTML`);
+    if (!fs.existsSync(output)) {
+        fs.mkdirSync(output)
+    }
+    fs.writeFileSync(outputPath, generateSite(team), "utf-8");
+}
 
 userInput(); 
